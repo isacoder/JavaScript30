@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scoped CSS Variables and JS</title>
+</head>
+<body>
+  <h2>Update CSS Variables with <span class='important-title'>JS</span></h2>
+
+  <div class="controls">
+    <label for="spacing">Spacing:</label>
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+    <label for="blur">Blur:</label>
+    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+    <label for="base">Base Color</label>
+    <input id="base" type="color" name="base" value="#ffc600">
+  </div>
+
+  <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
+
+  <div class= "box-shadow-controls">
+
+    <div>
+      <label for="shift-right">Shift Right</label>
+      <input id="shift-right" type="range" name="shift-right" min="-50" max="50" data-sizing="px">
+    </div>
+
+    <div>
+      <label for="shift-down">Shift Down</label>
+      <input id="shift-down" type="range" name="shift-down" min="-50" max="50" data-sizing="px">
+    </div>
+
+    <div>
+      <label for="spread">Spread</label>
+      <input id="spread" type="range" name="spread" min="-50" max="50" data-sizing="px">
+    </div>
+
+
+    <div>
+      <label for="shadow-blur">Shadow Blur</label>
+      <input id="shadow-blur" type="range" name="shadow-blur" min="0" max="50" data-sizing="px">
+    </div>
+
+  </div>
+
+  <style>
+
+    /* Tutorial update*/
+
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+      --shift-right: 5px;
+      --shift-down: 5px;
+      --spread: 5px;
+      --shadow-blur: 5px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+      box-shadow: var(--shift-right) var(--shift-down) var(--shadow-blur) var(--spread) #000000;
+      margin: 30px 0;
+    }
+
+    .important-title {
+      color: var(--base);
+    }
+
+    /*
+      misc styles, nothing to do with CSS variables
+    */
+
+    body {
+      text-align: center;
+      background: #193549;
+      color: white;
+      font-family: 'helvetica neue', sans-serif;
+      font-weight: 100;
+      font-size: 50px;
+    }
+
+    .controls {
+      margin-bottom: 50px;
+    }
+
+    .box-shadow-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-row: auto;
+      margin: 10px 5px;
+    }
+
+    input {
+      width: 100px;
+    }
+  </style>
+
+  <script>
+
+const topInputs = document.querySelectorAll('.controls input');
+
+function handleUpdateColor() {
+  const trying = document.documentElement.style;
+  if(trying === undefined) return;
+  const suffix = this.dataset.sizing || '';
+  document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+}
+
+topInputs.forEach(input => input.addEventListener('change', handleUpdateColor));
+topInputs.forEach(input => input.addEventListener('mousemove', handleUpdateColor));
+
+function handleUpdateShadow() {
+  const trying = document.documentElement.style;
+  if(trying === undefined) return;
+  const suffix = this.dataset.sizing || '';
+  document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+}
+
+const bottomInputs = document.querySelectorAll('.box-shadow-controls input');
+
+bottomInputs.forEach(input => input.addEventListener('change', handleUpdateShadow));
+bottomInputs.forEach(input => input.addEventListener('mousemove', handleUpdateShadow))
+
+</script>
+
+</body>
+</html>
